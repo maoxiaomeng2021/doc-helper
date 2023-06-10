@@ -30,6 +30,9 @@
 >
 > DocHelper希望把时间还给code,做**更多有意义的事情**,而不是为了枯燥的文档浪费时间 Give time back to yourself !
 
+### TIPS
+由于gitee防盗链机制,使用typora+自定义图床的图片无法在gitee上正常显示,下载到本地即可,或者等待作者重新制图
+
 ### 使用须知
 
 **BusinessDocHelper-1.0-SNAPSHOT** 已知bug:
