@@ -155,7 +155,7 @@ Let's Start 😊
 
 使用git工具下载项目(暂未上传至maven中央仓库)
 
-> 项目地址 :    https://gitee.com/gaozexi/doc-helper
+> 项目地址 :    https://gitee.com/gaozexi/doc-helper.git
 
 #### 2. 找到DocHelper
 
