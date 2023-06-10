@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>top.healthylife</groupId>
+    <artifactId>DocHelper</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <description>
+        业务文档生成器,妈妈再也不用担心我的详设啦!   :)
+        项目地址:
+        https://gitee.com/gaozexi/doc-helper.git
+        如果对您有帮助,请您给一个友好的★star★
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.26</version>
+        </dependency>
+
+        <!--  您暂时拉不到这个包,我还没上传到maven中央仓库      -->
+        <!--  基于docx4j封装处理word   -->
+        <dependency>
+            <groupId>com.gzx</groupId>
+            <artifactId>docx4j2pdf-core-plug-starter</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- thymeleaf -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <version>2.0.5.RELEASE</version>
+        </dependency>
+
+        <!-- poi excel读取    -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.3</version>
+        </dependency>
+    </dependencies>
+
+</project>
