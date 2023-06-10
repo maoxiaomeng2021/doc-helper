@@ -163,7 +163,11 @@ Let's Start 😊
 
 ````java
 //任意可执行代码的地方(main方法,测试类),仅需一句代码即可完成文档的生成:
-DocHelper.start(null);
+public class Demo{
+ public static void main(String[] args){
+   DocHelper.start(null);
+ }
+}
 ````
 
 
