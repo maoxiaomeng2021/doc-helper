@@ -43,7 +43,7 @@ public class DocBaseConfig {
     /**
      * 配置是否已经加载
      */
-    static boolean isLoadConfig;
+    public static boolean isLoadConfig;
 
     /**
      * 基础菜单目录树

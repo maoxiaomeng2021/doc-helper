@@ -1,8 +1,6 @@
 package top.healthylife.gzx.dochelper;
 
 import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
@@ -44,13 +42,14 @@ public class DocHelper {
      * Let's start from here
      */
     public static void start(File config) {
-
-        File configFile = DocHelper.configFile;
-        if (config != null) {
-            configFile = config;
+        if(!DocBaseConfig.isLoadConfig){
+            File configFile = DocHelper.configFile;
+            if (config != null) {
+                configFile = config;
+            }
+            //初始化配置
+            DocBaseConfig.initConfig(configFile);
         }
-        //初始化配置
-        DocBaseConfig.initConfig(configFile);
         //打印配置树
         System.out.println(JSONUtil.toJsonPrettyStr(DocBaseConfig.docTitleTrees));
         //打印配置菜单
