@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <description>
-        业务文档生成器,妈妈再也不用担心我的详设啦!   :)
+        业务文档生成器,妈妈再也不用担心我的详设啦! :)
         项目地址:
         https://gitee.com/gaozexi/doc-helper.git
         如果对您有帮助,请您给一个友好的★star★
@@ -64,11 +64,23 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
             </plugin>
+
         </plugins>
     </build>
 </project>
