@@ -17,6 +17,8 @@ import java.io.OutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static top.healthylife.gzx.dochelper.config.DocBaseConfig.isLoadConfig;
+
 /**
  * 功能描述: DocHelper
  *
@@ -57,8 +59,10 @@ public class DocHelper {
      * Let's start from here
      */
     public static void start(MultipartFile multipartFile, OutputStream outputStream) {
-        //初始化配置
-        DocBaseConfig.initRemoteConfig(multipartFile);
+        if (!isLoadConfig) {
+            //初始化配置
+            DocBaseConfig.initRemoteConfig(multipartFile);
+        }
         //打印配置树
         log.info("打印配置树:{}", JSONUtil.toJsonPrettyStr(DocBaseConfig.docTitleTrees));
         //打印配置菜单

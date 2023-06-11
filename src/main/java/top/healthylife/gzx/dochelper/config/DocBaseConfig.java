@@ -68,12 +68,15 @@ public class DocBaseConfig {
     public static List<DocTitleTree> docTitleTrees;
 
 
+    public static boolean isLoadConfig = false;
+
     /**
      * k:hKey: v: <key,value>
      */
     public static Map<String, Map<String, DocMenu>> customLeafContent;
 
     public static void initLocalConfig(File file) {
+        clearConfig();
         log.info("初始化本地配置文件:{}", file.getPath());
         DocConfigSheet config = DocConfigSheet.GLOBAL_CONFIG;
         try {
@@ -96,6 +99,7 @@ public class DocBaseConfig {
 
     @SneakyThrows
     public static void initRemoteConfig(MultipartFile remoteFile) {
+        clearConfig();
         if (remoteFile == null) {
             throw new BusinessException("请上传配置文件");
         }
@@ -115,6 +119,7 @@ public class DocBaseConfig {
             //自定义叶子节点配置
             config = DocConfigSheet.CUSTOM_LEAF_CONFIG;
             ExcelConfig2JsonHelper.parseLeafCustomConfig(file, config);
+            isLoadConfig = true;
         } catch (Exception e) {
             throw new BusinessException(config.desc + "导入解析失败,错误信息" + e.getMessage());
         }
@@ -229,6 +234,16 @@ public class DocBaseConfig {
         }
         DocBaseConfig docBaseConfig = globalCustomConfig.stream().filter(e -> e.getKey().equalsIgnoreCase(key)).findAny().orElseThrow(() -> new BusinessException("未找到配置项" + key));
         return docBaseConfig.value;
+    }
+
+    public static void clearConfig() {
+        baseMenuConfig = null;
+        leafCommonConfig = null;
+        leafCustomConfig = null;
+        globalCustomConfig = null;
+        docTitleTrees = null;
+        isLoadConfig = false;
+        customLeafContent = new HashMap<>();
     }
 
     /**
