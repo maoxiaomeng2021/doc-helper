@@ -9,9 +9,11 @@ import cn.hutool.json.JSONUtil;
 import life.gzx.docx4jhelper.enums.Docx4jStyle;
 import life.gzx.docx4jhelper.utils.WordProcessor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 import top.healthylife.gzx.dochelper.config.DocBaseConfig;
 
 import java.io.File;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,23 +44,29 @@ public class DocHelper {
      * Let's start from here
      */
     public static void start(File config) {
-        if(!DocBaseConfig.isLoadConfig){
-            File configFile = DocHelper.configFile;
-            if (config != null) {
-                configFile = config;
-            }
-            //初始化配置
-            DocBaseConfig.initConfig(configFile);
-        }
-        //打印配置树
-        System.out.println(JSONUtil.toJsonPrettyStr(DocBaseConfig.docTitleTrees));
-        //打印配置菜单
-        //DocHelper.printTitle(DocBaseConfig.docTitleTrees, 0);
+        DocBaseConfig.initLocalConfig(configFile);
         WordProcessor.DocumentBuilder documentBuilder = WordProcessor.startDocument();
         DocHelper.buildWordContent(DocBaseConfig.docTitleTrees, documentBuilder);
         String docDir = DocBaseConfig.getConfigByKey("docDir");
         documentBuilder.builder(new File(docDir));
         log.info("生成完毕,目录:{}", docDir);
+    }
+
+
+    /**
+     * Let's start from here
+     */
+    public static void start(MultipartFile multipartFile, OutputStream outputStream) {
+        //初始化配置
+        DocBaseConfig.initRemoteConfig(multipartFile);
+        //打印配置树
+        log.info("打印配置树:{}", JSONUtil.toJsonPrettyStr(DocBaseConfig.docTitleTrees));
+        //打印配置菜单
+        //DocHelper.printTitle(DocBaseConfig.docTitleTrees, 0);
+        WordProcessor.DocumentBuilder documentBuilder = WordProcessor.startDocument();
+        DocHelper.buildWordContent(DocBaseConfig.docTitleTrees, documentBuilder);
+        documentBuilder.builder(outputStream);
+        log.info("生成完毕");
     }
 
     /**

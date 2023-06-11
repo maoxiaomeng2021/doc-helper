@@ -1,15 +1,20 @@
 package top.healthylife.gzx.dochelper.config;
 
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.Data;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 import top.healthylife.gzx.dochelper.*;
 import top.healthylife.gzx.swagger.SwaggerParser;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -41,11 +46,6 @@ public class DocBaseConfig {
     String hKey;
 
     /**
-     * 配置是否已经加载
-     */
-    public static boolean isLoadConfig;
-
-    /**
      * 基础菜单目录树
      */
     public static List<DocMenu> baseMenuConfig;
@@ -73,11 +73,35 @@ public class DocBaseConfig {
      */
     public static Map<String, Map<String, DocMenu>> customLeafContent;
 
-    public static void initConfig(File file) {
-        if(isLoadConfig){
-           return;
+    public static void initLocalConfig(File file) {
+        log.info("初始化本地配置文件:{}", file.getPath());
+        DocConfigSheet config = DocConfigSheet.GLOBAL_CONFIG;
+        try {
+            //全局配置
+            globalCustomConfig = ExcelConfig2JsonHelper.parseGlobalCustomConfig(file, config);
+            //通用叶子节点配置
+            config = DocConfigSheet.COMMON_LEAF_CONFIG;
+            leafCommonConfig = ExcelConfig2JsonHelper.parseCommonLeafMenuSheet(file, config);
+            //基础菜单配置
+            config = DocConfigSheet.BASE_MENU_CONFIG;
+            DocBaseConfig.baseMenuConfig = ExcelConfig2JsonHelper.parseBaseMenuSheet(file, config);
+            //自定义叶子节点配置
+            config = DocConfigSheet.CUSTOM_LEAF_CONFIG;
+            ExcelConfig2JsonHelper.parseLeafCustomConfig(file, config);
+        } catch (Exception e) {
+            throw new BusinessException(config.desc + "导入解析失败,错误信息" + e.getMessage());
         }
-        log.info("初始化配置文件:{}", file.getPath());
+        docTitleTrees = DocHelper.buildDocTitleTreeList();
+    }
+
+    @SneakyThrows
+    public static void initRemoteConfig(MultipartFile remoteFile) {
+        if (remoteFile == null) {
+            throw new BusinessException("请上传配置文件");
+        }
+        File file = FileUtil.createTempFile(null, true);
+        IoUtil.write(new FileOutputStream(file), true, remoteFile.getBytes());
+        log.info("初始化远程配置文件:{}", file.getPath());
         DocConfigSheet config = DocConfigSheet.GLOBAL_CONFIG;
         try {
             //全局配置
