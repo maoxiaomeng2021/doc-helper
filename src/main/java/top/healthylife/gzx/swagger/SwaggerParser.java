@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import top.healthylife.gzx.dochelper.BusinessException;
 import top.healthylife.gzx.swagger.model.ModelAttr;
 import top.healthylife.gzx.swagger.model.Request;
 import top.healthylife.gzx.swagger.model.Response;
@@ -48,7 +49,7 @@ public class SwaggerParser {
                 try {
                     swaggerResBody = HttpUtil.createGet(url).execute().body();
                 } catch (Exception e) {
-                    throw new RuntimeException("访问swagger地址异常");
+                    throw new BusinessException("访问swagger地址[{}]异常,{}",url,e.getMessage());
                 }
             }
             resultMap = parseBySwaggerJson(swaggerResBody, apiPath);

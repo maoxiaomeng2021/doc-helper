@@ -82,7 +82,7 @@ public class DocHelper {
         try {
             return buildList(null, baseMenuConfig, 0);
         } catch (Exception e) {
-            throw new RuntimeException("构建基础菜单目录树失败,请检查配置是否正确,错误信息:" + e.getMessage());
+            throw new BusinessException("构建基础菜单目录树失败,请检查配置是否正确,错误信息:" + e.getMessage());
         }
     }
 

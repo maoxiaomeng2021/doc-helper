@@ -92,7 +92,7 @@ public class DocBaseConfig {
             config = DocConfigSheet.CUSTOM_LEAF_CONFIG;
             ExcelConfig2JsonHelper.parseLeafCustomConfig(file, config);
         } catch (Exception e) {
-            throw new RuntimeException(config.desc + "导入解析失败,错误信息" + e.getMessage());
+            throw new BusinessException(config.desc + "导入解析失败,错误信息" + e.getMessage());
         }
         docTitleTrees = DocHelper.buildDocTitleTreeList();
     }
@@ -181,7 +181,7 @@ public class DocBaseConfig {
                 contents.add(DocContent.buildDocContent(plainType, imageUrl));
                 break;
             default:
-                throw new RuntimeException("未知的文本类型" + plainType);
+                throw new BusinessException("未知的文本类型" + plainType);
         }
         return contents;
     }
@@ -201,9 +201,9 @@ public class DocBaseConfig {
 
     public static String getConfigByKey(String key) {
         if (ObjectUtil.isEmpty(globalCustomConfig)) {
-            throw new RuntimeException("全局配置未加载");
+            throw new BusinessException("全局配置未加载");
         }
-        DocBaseConfig docBaseConfig = globalCustomConfig.stream().filter(e -> e.getKey().equalsIgnoreCase(key)).findAny().orElseThrow(() -> new RuntimeException("未找到配置项" + key));
+        DocBaseConfig docBaseConfig = globalCustomConfig.stream().filter(e -> e.getKey().equalsIgnoreCase(key)).findAny().orElseThrow(() -> new BusinessException("未找到配置项" + key));
         return docBaseConfig.value;
     }
 
