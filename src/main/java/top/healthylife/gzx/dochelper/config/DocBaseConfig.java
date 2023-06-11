@@ -41,6 +41,11 @@ public class DocBaseConfig {
     String hKey;
 
     /**
+     * 配置是否已经加载
+     */
+    static boolean isLoadConfig;
+
+    /**
      * 基础菜单目录树
      */
     public static List<DocMenu> baseMenuConfig;
@@ -69,6 +74,9 @@ public class DocBaseConfig {
     public static Map<String, Map<String, DocMenu>> customLeafContent;
 
     public static void initConfig(File file) {
+        if(isLoadConfig){
+           return;
+        }
         log.info("初始化配置文件:{}", file.getPath());
         DocConfigSheet config = DocConfigSheet.GLOBAL_CONFIG;
         try {
