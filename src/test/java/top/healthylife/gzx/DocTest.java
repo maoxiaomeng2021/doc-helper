@@ -11,7 +11,6 @@ import top.healthylife.gzx.dochelper.DocHelper;
  * @date 20230609
  */
 @Slf4j
-@SuppressWarnings("all")
 public class DocTest {
 
 

@@ -1,6 +1,8 @@
 package top.healthylife.gzx.dochelper;
 
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
@@ -25,7 +27,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DocHelper {
 
-    public static final File configFile = new File("C:\\Users\\maoxiaomeng\\Desktop\\DocHelper配置表.xlsx");
+    public static final File configFile = new File(defaultConfig());
+
+    public static String defaultConfig() {
+        return System.getProperty("user.dir") + File.separator + "target" + File.separator + "classes" + File.separator + "DocHelper配置表.xlsx";
+    }
 
     /**
      * 这里会有并发问题,但是目前不打算支持并发调用
@@ -38,6 +44,7 @@ public class DocHelper {
      * Let's start from here
      */
     public static void start(File config) {
+
         File configFile = DocHelper.configFile;
         if (config != null) {
             configFile = config;
@@ -184,7 +191,7 @@ public class DocHelper {
     }
 
     public static List<DocMenu> getCommonLeafMenuByExcel(File file) {
-        return ExcelConfig2JsonHelper.parseCommonLeafMenuSheet(file,DocConfigSheet.COMMON_LEAF_CONFIG);
+        return ExcelConfig2JsonHelper.parseCommonLeafMenuSheet(file, DocConfigSheet.COMMON_LEAF_CONFIG);
     }
 
 

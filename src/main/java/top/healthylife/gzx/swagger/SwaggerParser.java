@@ -34,17 +34,22 @@ public class SwaggerParser {
 
     static String swaggerResBody = null;
 
-    public static String buildApiHtmlChunk(String url,String template, String... apiPath) {
-        Map<String, Object> map =  parseBySwaggerUrl(url, apiPath);
-        return HtmlUtil.unescape(buildHtmlStr(map,template));
+    public static String buildApiHtmlChunk(String url, String template, String... apiPath) {
+        Map<String, Object> map = parseBySwaggerUrl(url, apiPath);
+        return HtmlUtil.unescape(buildHtmlStr(map, template));
     }
 
     public Map<String, Object> parseBySwaggerUrl(String url, String... apiPath) {
         Map<String, Object> resultMap = new HashMap<>();
         List<Table> result = new ArrayList<>();
         try {
-            if(swaggerResBody==null){
-                swaggerResBody = HttpUtil.createGet(url).execute().body();
+            if (swaggerResBody == null) {
+                log.info("初次访问API,加载swagger ");
+                try {
+                    swaggerResBody = HttpUtil.createGet(url).execute().body();
+                } catch (Exception e) {
+                    throw new RuntimeException("访问swagger地址异常");
+                }
             }
             resultMap = parseBySwaggerJson(swaggerResBody, apiPath);
             log.debug(JSONUtil.toJsonPrettyStr(resultMap));
@@ -559,8 +564,7 @@ public class SwaggerParser {
     }
 
 
-
-    public static String buildHtmlStr(Map<String, Object> map,String template) {
+    public static String buildHtmlStr(Map<String, Object> map, String template) {
         SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
         Context context = new Context();
         context.setVariables(map);

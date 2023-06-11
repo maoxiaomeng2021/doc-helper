@@ -3,7 +3,9 @@ package top.healthylife.gzx.dochelper.config;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import top.healthylife.gzx.dochelper.*;
 import top.healthylife.gzx.swagger.SwaggerParser;
 
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
  * @date 20230610
  */
 @Data
+@Slf4j
 public class DocBaseConfig {
     /**
      * Excel 对应 sheet配置项的标题key
@@ -66,14 +69,19 @@ public class DocBaseConfig {
     public static Map<String, Map<String, DocMenu>> customLeafContent;
 
     public static void initConfig(File file) {
-        DocConfigSheet config = DocConfigSheet.BASE_MENU_CONFIG;
+        log.info("初始化配置文件:{}", file.getPath());
+        DocConfigSheet config = DocConfigSheet.GLOBAL_CONFIG;
         try {
+            //全局配置
             globalCustomConfig = ExcelConfig2JsonHelper.parseGlobalCustomConfig(file, config);
+            //通用叶子节点配置
             config = DocConfigSheet.COMMON_LEAF_CONFIG;
             leafCommonConfig = ExcelConfig2JsonHelper.parseCommonLeafMenuSheet(file, config);
-            config = DocConfigSheet.CUSTOM_LEAF_CONFIG;
+            //基础菜单配置
+            config = DocConfigSheet.BASE_MENU_CONFIG;
             DocBaseConfig.baseMenuConfig = ExcelConfig2JsonHelper.parseBaseMenuSheet(file, config);
-            config = DocConfigSheet.GLOBAL_CONFIG;
+            //自定义叶子节点配置
+            config = DocConfigSheet.CUSTOM_LEAF_CONFIG;
             ExcelConfig2JsonHelper.parseLeafCustomConfig(file, config);
         } catch (Exception e) {
             throw new RuntimeException(config.desc + "导入解析失败,错误信息" + e.getMessage());
@@ -177,6 +185,7 @@ public class DocBaseConfig {
      * @return word内容
      */
     public static DocContent getApiInfo(String... apiPath) {
+        log.info("获取接口信息:{}", (Object) apiPath);
         String tableHtml = SwaggerParser.buildApiHtmlChunk(getConfigByKey("swaggerUrl"), getConfigByKey("apiInfoTpl"), apiPath);
         return DocContent.buildDocContent(DocContentType.HTML, tableHtml);
     }
