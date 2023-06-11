@@ -38,20 +38,6 @@ public class SwaggerParser {
 
     static String swaggerResBody = null;
 
-    public static void main(String[] args) {
-
-        String apiPath = "/api/risk-manage/jar/package/list";
-        String url = "http://192.168.10.103:9203/v2/api-docs?group=manage";
-        File file = new File("C:\\Users\\maoxiaomeng\\Desktop\\html.html");
-        Map<String, Object> map = parseBySwaggerUrl(url, apiPath);
-        //writeContentToFile(map, file);
-        String s = buildHtmlStr(map,"<html>Hello themleaf </html>");
-        System.out.println("s = " + HtmlUtil.unescape(s));
-        FileUtil.writeBytes(s.getBytes(), file);
-        //System.out.println(JSONUtil.toJsonPrettyStr(map));
-
-    }
-
     public static String buildApiHtmlChunk(String url,String template, String... apiPath) {
         Map<String, Object> map =  parseBySwaggerUrl(url, apiPath);
         return HtmlUtil.unescape(buildHtmlStr(map,template));

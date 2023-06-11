@@ -6,8 +6,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
-import com.gzx.plug.docx4j2pdf.enums.Docx4jStyle;
-import com.gzx.plug.docx4j2pdf.utils.WordProcessor;
+import life.gzx.docx4jhelper.enums.Docx4jStyle;
+import life.gzx.docx4jhelper.utils.WordProcessor;
 import lombok.extern.slf4j.Slf4j;
 import top.healthylife.gzx.dochelper.config.DocBaseConfig;
 
