@@ -41,7 +41,6 @@ public class DocBaseConfig {
      * 基础菜单目录树
      */
     public static List<DocMenu> baseMenuConfig;
-    ;
     /**
      * 叶子项菜单通用配置
      */
@@ -67,16 +66,24 @@ public class DocBaseConfig {
     public static Map<String, Map<String, DocMenu>> customLeafContent;
 
     public static void initConfig(File file) {
-        globalCustomConfig = ExcelConfig2JsonHelper.parseCustomConfig(file);
-        leafCommonConfig = ExcelConfig2JsonHelper.parseCommonLeafMenuSheet(file);
-        baseMenuConfig = ExcelConfig2JsonHelper.parseBaseMenuSheet(file);
-        ExcelConfig2JsonHelper.parseLeafCustomConfig(file);
+        DocConfigSheet config = DocConfigSheet.BASE_MENU_CONFIG;
+        try {
+            globalCustomConfig = ExcelConfig2JsonHelper.parseGlobalCustomConfig(file, config);
+            config = DocConfigSheet.COMMON_LEAF_CONFIG;
+            leafCommonConfig = ExcelConfig2JsonHelper.parseCommonLeafMenuSheet(file, config);
+            config = DocConfigSheet.CUSTOM_LEAF_CONFIG;
+            DocBaseConfig.baseMenuConfig = ExcelConfig2JsonHelper.parseBaseMenuSheet(file, config);
+            config = DocConfigSheet.GLOBAL_CONFIG;
+            ExcelConfig2JsonHelper.parseLeafCustomConfig(file, config);
+        } catch (Exception e) {
+            throw new RuntimeException(config.desc + "导入解析失败,错误信息" + e.getMessage());
+        }
         docTitleTrees = DocHelper.buildDocTitleTreeList();
     }
 
     public List<DocContent> getContent() {
         if (value == null) {
-            if(needBr()){
+            if (needBr()) {
                 return ListUtil.of(DocContent.buildBlankParagraph());
             }
             return Collections.emptyList();
@@ -115,7 +122,7 @@ public class DocBaseConfig {
         }
     }
 
-    public static Boolean needBr(){
+    public static Boolean needBr() {
         String appendBr = DocBaseConfig.getConfigByKey("appendBr");
         return BooleanUtil.toBoolean(appendBr);
     }
@@ -167,10 +174,10 @@ public class DocBaseConfig {
      * 解析解析叶子节项菜单的值-api信息
      *
      * @param apiPath 即swagger文档的 path
-     * @return
+     * @return word内容
      */
     public static DocContent getApiInfo(String... apiPath) {
-        String tableHtml = SwaggerParser.buildApiHtmlChunk(getConfigByKey("swaggerUrl"),getConfigByKey("apiInfoTpl"), apiPath);
+        String tableHtml = SwaggerParser.buildApiHtmlChunk(getConfigByKey("swaggerUrl"), getConfigByKey("apiInfoTpl"), apiPath);
         return DocContent.buildDocContent(DocContentType.HTML, tableHtml);
     }
 

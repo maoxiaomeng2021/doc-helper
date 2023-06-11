@@ -1,7 +1,6 @@
 package top.healthylife.gzx.dochelper;
 
 import cn.hutool.core.util.BooleanUtil;
-import cn.hutool.json.JSONUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import top.healthylife.gzx.dochelper.config.DocBaseConfig;
@@ -22,22 +21,16 @@ import java.util.stream.Collectors;
 public class ExcelConfig2JsonHelper {
 
 
-    static final File f = new File("C:\\Users\\maoxiaomeng\\Desktop\\详设目录.xlsx");
+    static final String SEPARATOR = ":";
 
     static final Map<String, DocMenu> MENU_MANAGE = new HashMap<>();
-
-    public static void main(String[] args) {
-
-        List<DocMenu> parse = parseCommonLeafMenuSheet(f);
-        System.out.println("parse = " + JSONUtil.toJsonPrettyStr(parse));
-    }
 
     public static DocMenu str2Menu(String menuName) {
 
         DocMenu docMenu = new DocMenu();
 
-        if (menuName.contains(":")) {
-            String[] split = menuName.split(":");
+        if (menuName.contains(SEPARATOR)) {
+            String[] split = menuName.split(SEPARATOR);
             boolean isEnd = BooleanUtil.toBoolean(split[1]);
             docMenu.setNoLeaf(isEnd);
             docMenu.setName(split[0]);
@@ -66,12 +59,12 @@ public class ExcelConfig2JsonHelper {
      * 程序系统的结构	管理后台	元数据
      * 程序系统的结构	管理后台	元数据	元数据管理
      *
-     * @param f file
-     * @return base菜单config
+     * @param f 配置文件
+     * @return 基础菜单项的索引
      */
-    public static List<DocMenu> parseBaseMenuSheet(File f) {
+    public static List<DocMenu> parseBaseMenuSheet(File f, DocConfigSheet docConfigSheet) {
         ExcelReader reader = ExcelUtil.getReader(f);
-        reader.setSheet(0);
+        reader.setSheet(docConfigSheet.sheetIndex);
         List<List<Object>> rows = reader.read();
         ArrayList<DocMenu> docMenus = new ArrayList<>();
         for (List<Object> row : rows) {
@@ -104,23 +97,34 @@ public class ExcelConfig2JsonHelper {
      * @param f file
      * @return leaf的base配置
      */
-    public static List<DocMenu> parseCommonLeafMenuSheet(File f) {
+    public static List<DocMenu> parseCommonLeafMenuSheet(File f, DocConfigSheet docConfigSheet) {
         ExcelReader reader = ExcelUtil.getReader(f);
-        reader.setSheet(1);
+        reader.setSheet(docConfigSheet.sheetIndex);
         List<DocBaseConfig> docBaseConfigs = reader.readAll(DocBaseConfig.class);
         return docBaseConfigs.stream().map(DocBaseConfig::leaf2DocMenu).collect(Collectors.toList());
     }
 
-    public static void parseLeafCustomConfig(File f) {
+    /**
+     * 解析自定义叶子节点
+     * @param f 配置文件
+     * @param docConfigSheet 叶子节点所在索引
+     */
+    public static void parseLeafCustomConfig(File f, DocConfigSheet docConfigSheet) {
         ExcelReader reader = ExcelUtil.getReader(f);
-        reader.setSheet(2);
+        reader.setSheet(docConfigSheet.sheetIndex);
         List<DocBaseConfig> docBaseConfigs = reader.readAll(DocBaseConfig.class);
         docBaseConfigs.forEach(DocBaseConfig::customLeaf2DocMenu);
     }
 
-    public static List<DocBaseConfig> parseCustomConfig(File f) {
+    /**
+     * 解析全局配置
+     * @param f 配置文件
+     * @param docConfigSheet 全局配置所在索引
+     * @return 配置信息
+     */
+    public static List<DocBaseConfig> parseGlobalCustomConfig(File f, DocConfigSheet docConfigSheet) {
         ExcelReader reader = ExcelUtil.getReader(f);
-        reader.setSheet(3);
+        reader.setSheet(docConfigSheet.sheetIndex);
         return reader.readAll(DocBaseConfig.class);
     }
 

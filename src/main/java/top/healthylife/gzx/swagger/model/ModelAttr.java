@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 返回属性
- *
- * @author kevin
+ * @author maoxiaomeng
  */
 @Data
 public class ModelAttr implements Serializable {

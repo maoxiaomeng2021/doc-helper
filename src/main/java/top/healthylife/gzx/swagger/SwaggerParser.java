@@ -1,6 +1,5 @@
 package top.healthylife.gzx.swagger;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.http.HtmlUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
@@ -18,15 +17,12 @@ import top.healthylife.gzx.swagger.model.Request;
 import top.healthylife.gzx.swagger.model.Response;
 import top.healthylife.gzx.swagger.model.Table;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 功能描述: SwaggerParser
+ * 功能描述: SwaggerParser  这个解析用到了太多的cast ,使用SuppressWarnings 压制下
  *
  * @author maoxiaomeng
  * @date 20230610

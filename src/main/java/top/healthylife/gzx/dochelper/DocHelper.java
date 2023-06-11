@@ -73,7 +73,11 @@ public class DocHelper {
      */
     public static List<DocTitleTree> buildDocTitleTreeList() {
         List<DocMenu> baseMenuConfig = DocBaseConfig.baseMenuConfig;
-        return buildList(null, baseMenuConfig, 0);
+        try {
+            return buildList(null, baseMenuConfig, 0);
+        } catch (Exception e) {
+            throw new RuntimeException("构建基础菜单目录树失败,请检查配置是否正确,错误信息:" + e.getMessage());
+        }
     }
 
     /**
@@ -175,12 +179,12 @@ public class DocHelper {
     }
 
 
-    public static List<DocMenu> getStaticMenu() {
+    public static List<DocMenu> getCommonLeafMenu() {
         return JSONUtil.parseArray(staticMenuJson).stream().map(e -> JSONUtil.parse(e).toBean(DocMenu.class)).collect(Collectors.toList());
     }
 
-    public static List<DocMenu> getStaticMenuByExcel(File file) {
-        return ExcelConfig2JsonHelper.parseCommonLeafMenuSheet(file);
+    public static List<DocMenu> getCommonLeafMenuByExcel(File file) {
+        return ExcelConfig2JsonHelper.parseCommonLeafMenuSheet(file,DocConfigSheet.COMMON_LEAF_CONFIG);
     }
 
 

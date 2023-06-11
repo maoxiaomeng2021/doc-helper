@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * Created by XiuYin.Cui on 2018/1/11.
+ * @author maoxiaomeng
  */
 @Data
 public class Table {

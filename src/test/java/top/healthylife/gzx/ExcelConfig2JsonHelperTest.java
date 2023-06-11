@@ -5,6 +5,7 @@ import cn.hutool.json.JSONUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import org.testng.annotations.Test;
+import top.healthylife.gzx.dochelper.DocConfigSheet;
 import top.healthylife.gzx.dochelper.DocMenu;
 import top.healthylife.gzx.dochelper.ExcelConfig2JsonHelper;
 import top.healthylife.gzx.dochelper.config.DocBaseConfig;
@@ -31,7 +32,7 @@ public class ExcelConfig2JsonHelperTest {
     @Test
     public void testExcelParse(){
         DocBaseConfig.initConfig(f);
-        List<DocMenu> parse = ExcelConfig2JsonHelper.parseCommonLeafMenuSheet(f);
+        List<DocMenu> parse = ExcelConfig2JsonHelper.parseCommonLeafMenuSheet(f, DocConfigSheet.COMMON_LEAF_CONFIG);
         System.out.println("parse = " + JSONUtil.toJsonPrettyStr(parse));
     }
 }

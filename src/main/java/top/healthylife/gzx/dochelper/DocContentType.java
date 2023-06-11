@@ -35,8 +35,8 @@ public enum DocContentType {
     /**
      * 获取内容的类型
      *
-     * @param content
-     * @return
+     * @param content 配置单元格的内容
+     * @return 返回内容的类型
      */
     public static DocContentType getPlainType(String content) {
         DocContentType[] values = values();
@@ -71,40 +71,6 @@ public enum DocContentType {
             strings.add(group);
         }
         return StrUtil.join(",", strings);
-    }
-
-    public static void main(String[] args) {
-        String value = "${API:/api/dc/dms/dmsDataStandard/add},\n" +
-                "${API:/api/dc/dms/dmsDataStandard/delete},\n" +
-                "${API:/api/dc/dms/dmsDataStandard/detail/{code}},\n" +
-                "${API:/api/dc/dms/dmsDataStandard/export},\n" +
-                "${API:/api/dc/dms/dmsDataStandard/importExcel},\n" +
-                "${API:/api/dc/dms/dmsDataStandard/list},\n" +
-                "${API:/api/dc/dms/dmsDataStandard/modify},\n" +
-                "${API:/api/dc/dms/dmsDataStandard/page},\n" +
-                "${API:/api/dc/dms/dmsDataStandard/tableFieldMapping},\n" +
-                "${API:/api/dc/dms/dmsDataStandard/template},\n" +
-                "${API:/api/dc/dms/dmsDataDict/add},\n" +
-                "${API:/api/dc/dms/dmsDataDict/delete},\n" +
-                "${API:/api/dc/dms/dmsDataDict/detail/{code}},\n" +
-                "${API:/api/dc/dms/dmsDataDict/list},\n" +
-                "${API:/api/dc/dms/dmsDataDict/modify},\n" +
-                "${API:/api/dc/dms/dmsDataDict/page},\n" +
-                "${API:/api/dc/dms/dmsDevStandard/add},\n" +
-                "${API:/api/dc/dms/dmsDevStandard/delete},\n" +
-                "${API:/api/dc/dms/dmsDevStandard/detail/{code}},\n" +
-                "${API:/api/dc/dms/dmsDevStandard/list},\n" +
-                "${API:/api/dc/dms/dmsDevStandard/modify},\n" +
-                "${API:/api/dc/dms/dmsDevStandard/page},\n" +
-                "${API:/api/dc/dms/dmsDataCatalog/add},\n" +
-                "${API:/api/dc/dms/dmsDataCatalog/delete},\n" +
-                "${API:/api/dc/dms/dmsDataCatalog/detail/{code}},\n" +
-                "${API:/api/dc/dms/dmsDataCatalog/list},\n" +
-                "${API:/api/dc/dms/dmsDataCatalog/modify},\n" +
-                "${API:/api/dc/dms/dmsDataCatalog/page}";
-
-        DocContentType plainType = getPlainType(value);
-        System.out.println("plainType = " + plainType);
     }
 
 }

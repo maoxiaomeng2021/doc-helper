@@ -4,8 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+
 /**
- * Created by XiuYin.Cui on 2018/1/11.
+ * @author maoxiaomeng
  */
 @Data
 public class Request implements Serializable{
